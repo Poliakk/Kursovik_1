@@ -14,10 +14,20 @@ public class JavaProject {
                     fh.appendFile(mem);
                 }
                 case 2 -> {
-                    mm.removeMember(members);
-                    fh.overwriteFile(members);
+                    try {
+                        mm.removeMember(members);
+                        fh.overwriteFile(members);
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("No member with this ID.");
+                    }
                 }
-                case 3 -> mm.printMemberInfo(members);
+                case 3 -> {
+                    try {
+                        mm.printMemberInfo(members);
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("No member with this ID.");
+                    }
+                }
                 case -1 -> {
                     System.out.println("\nApp is closed.");
                     System.exit(0);

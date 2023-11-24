@@ -8,7 +8,7 @@ public class MembershipManagement {
         try {
             return Integer.parseInt(reader.next());
         } catch (NumberFormatException e) {
-            System.out.print("Unacceptable input.");
+            System.out.print("Unacceptable input. ");
             return -1;
         }
     }
@@ -67,25 +67,35 @@ public class MembershipManagement {
         }
         mem = mbr.toString();
         m.add(mbr);
-        System.out.println("New member is added:\n");
+        System.out.printf("<<Welcome new clubmember %s. Your memberID='%d'.>>", mbr.getName(), mbr.getMemberID());
+        System.out.println();
         return mem;
     }
 
-    public void removeMember(LinkedList<Member> m) {
-        int memberID;
-        do {
-            System.out.println("Input memberID to remove: ");
-            memberID = getIntInput() - 1;
-        } while (memberID < 0 || memberID >= m.size());
-        m.remove(memberID);
+    public void removeMember(LinkedList<Member> m) throws IndexOutOfBoundsException {
+        System.out.println("Input memberID to cancel membership: ");
+        int memberID = getIntInput();
+        int i;
+        for (i = 0; i < m.size(); i++) {
+            if (m.get(i).getMemberID() == memberID) {
+                break;
+            }
+        }
+        m.remove(i);
+        System.out.printf("<<Membership for memberID='%d' is canceled.>>", memberID);
+        System.out.println();
     }
 
-    public void printMemberInfo(LinkedList<Member> m) {
-        int memberID;
-        do {
-            System.out.println("Input memberID for info: ");
-            memberID = getIntInput() - 1;
-        } while (memberID < 0 | memberID >= m.size());
-        System.out.println("Member info:\n" + m.get(memberID));
+    public void printMemberInfo(LinkedList<Member> m) throws IndexOutOfBoundsException {
+        System.out.println("Input memberID for info: ");
+        int memberID = getIntInput();
+        int i;
+        for (i = 0; i < m.size(); i++) {
+            if (m.get(i).getMemberID() == memberID) {
+                break;
+            }
+        }
+        System.out.println("<< Member info: >>\nmemberType, memberID, name, fees, clubNumber/membershipPoints\n" +
+                m.get(i) + "--------------------");
     }
 }

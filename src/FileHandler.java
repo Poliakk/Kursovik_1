@@ -16,7 +16,7 @@ public class FileHandler {
             lines.forEach(System.out::println);
             System.out.println();
         } catch (IOException e) {
-            System.out.println("Unreadable file.");
+            System.out.println("Can't read file.");
             return null;
         }
 
@@ -50,23 +50,27 @@ public class FileHandler {
         try {
             File file = new File("members.tmp");
             File newFile = new File("members.csv");
+            file.createNewFile();
+            /*
             boolean isCreated = file.createNewFile();
             if (file.canWrite()) {
                 System.out.println("File members.tmp isCreated = " + isCreated + "\nFile is writable.");
             }
+             */
 
-            System.out.println(m.size());
+            // System.out.println(m.size());
             try (FileWriter writer = new FileWriter("members.tmp", true)) {
                 for (Member mbr : m) {
-                    System.out.println(mbr.toString());
+                    // System.out.println(mbr.toString());
                     writer.append(mbr.toString());
                 }
-                System.out.println("Aux.file is written");
-
+                // System.out.println("Aux.file is written");
+                newFile.delete();
+                /*
                 boolean del = newFile.delete();
                 if (del) {
                     System.out.println("Old file is deleted");
-                }
+                }*/
                 writer.flush();
             } catch (IOException e) {
                 throw new RuntimeException(e);
