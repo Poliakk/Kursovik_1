@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -7,9 +6,8 @@ public class MembershipManagement {
 
     private int getIntInput() {
         try {
-            int c = Integer.parseInt(reader.nextLine());
-            return c;
-        } catch (InputMismatchException | NumberFormatException e) {
+            return Integer.parseInt(reader.next());
+        } catch (NumberFormatException e) {
             System.out.print("Unacceptable input.");
             return -1;
         }
@@ -48,7 +46,7 @@ public class MembershipManagement {
 
         printClubOptions();
         do {
-            System.out.println("Input clubID from 1 to 4, please: ");
+            System.out.println(" Input clubID from 1 to 4, please: ");
             club = getIntInput();
         } while (club < 0 | club > 5);
 
@@ -64,16 +62,12 @@ public class MembershipManagement {
 
         if (club == 4) {
             mbr = new MultiClubMember('M', memberID, name, fees, 100);
-            mem = mbr.getMemberType() + ", " + memberID + ", " + name + ", " + fees + ", " +
-                    ((MultiClubMember) mbr).getMembershipPoints();
-
         } else {
             mbr = new SingleClubMember('S', memberID, name, fees, club);
-            mem = mbr.getMemberType() + ", " + memberID + ", " + name + ", " + fees + ", " +
-                    ((SingleClubMember) mbr).getClub();
         }
+        mem = mbr.toString();
         m.add(mbr);
-        System.out.println("New member is added:\n" + mbr);
+        System.out.println("New member is added:\n");
         return mem;
     }
 
@@ -81,8 +75,8 @@ public class MembershipManagement {
         int memberID;
         do {
             System.out.println("Input memberID to remove: ");
-            memberID = getIntInput();
-        } while (m.get(memberID) == null);//((memberID < 0) || (memberID > m.size()))
+            memberID = getIntInput() - 1;
+        } while (memberID < 0 || memberID >= m.size());
         m.remove(memberID);
     }
 
@@ -91,7 +85,7 @@ public class MembershipManagement {
         do {
             System.out.println("Input memberID for info: ");
             memberID = getIntInput() - 1;
-        } while (m.get(memberID) == null);//((memberID < 0) || (memberID > m.size()))
+        } while (memberID < 0 | memberID >= m.size());
         System.out.println("Member info:\n" + m.get(memberID));
     }
 }

@@ -16,12 +16,10 @@ public class SingleClubMember extends Member {
 
     @Override
     public String toString() {
-        return "Member{" +
-                "memberType=" + getMemberType() +
-                ", memberID=" + getMemberID() +
-                ", name='" + getName() + '\'' +
-                ", fees=" + getFees() +
-                ". SingleClubMember: club='" + getClub() + '\'' +
-                '}';
+        return getMemberType() +
+                ", " + getMemberID() +
+                ", " + getName() +
+                ", " + getFees() +
+                ", " + getClub() + '\n';
     }
 }

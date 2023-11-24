@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,7 +13,7 @@ public class FileHandler {
         Member mbr;
         try {
             lines = Files.readAllLines(Path.of("members.csv"));
-            lines.stream().forEach(System.out::println);
+            lines.forEach(System.out::println);
             System.out.println();
         } catch (IOException e) {
             System.out.println("Unreadable file.");
@@ -33,13 +35,47 @@ public class FileHandler {
             listOfMembers.add(mbr);
         }
         return listOfMembers;
-/*
-    public void appendFile(String mem){
-
     }
-    public void overwriteFile(LinkedList<Member> m){ //TODO
-        FileOutputStream fileOutputStream = new FileOutputStream("members.temp");
 
-    }*/
+    public void appendFile(String mem) {
+        try (FileWriter writer = new FileWriter("members.csv", true)) {
+            writer.append(mem);
+            writer.flush();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void overwriteFile(LinkedList<Member> m) {
+        try {
+            File file = new File("members.tmp");
+            File newFile = new File("members.csv");
+            boolean isCreated = file.createNewFile();
+            if (file.canWrite()) {
+                System.out.println("File members.tmp isCreated = " + isCreated + "\nFile is writable.");
+            }
+
+            System.out.println(m.size());
+            try (FileWriter writer = new FileWriter("members.tmp", true)) {
+                for (Member mbr : m) {
+                    System.out.println(mbr.toString());
+                    writer.append(mbr.toString());
+                }
+                System.out.println("Aux.file is written");
+
+                boolean del = newFile.delete();
+                if (del) {
+                    System.out.println("Old file is deleted");
+                }
+                writer.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            File newFileName = new File("members.csv");
+            file.renameTo(newFileName);
+        } catch (IOException e) {
+            System.out.println("ERROR");
+            e.printStackTrace();
+        }
     }
 }
