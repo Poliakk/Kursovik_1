@@ -47,37 +47,22 @@ public class FileHandler {
     }
 
     public void overwriteFile(LinkedList<Member> m) {
-        try {
-            File file = new File("members.tmp");
-            File newFile = new File("members.csv");
-            file.createNewFile();
-            /*
-            boolean isCreated = file.createNewFile();
-            if (file.canWrite()) {
-                System.out.println("File members.tmp isCreated = " + isCreated + "\nFile is writable.");
+        try (FileWriter writer = new FileWriter("members.tmp", true)) {
+            for (Member mbr : m) {
+                writer.append(mbr.toString());
             }
-             */
-
-            // System.out.println(m.size());
-            try (FileWriter writer = new FileWriter("members.tmp", true)) {
-                for (Member mbr : m) {
-                    // System.out.println(mbr.toString());
-                    writer.append(mbr.toString());
-                }
-                // System.out.println("Aux.file is written");
-                newFile.delete();
-                /*
-                boolean del = newFile.delete();
-                if (del) {
-                    System.out.println("Old file is deleted");
-                }*/
-                writer.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            File newFileName = new File("members.csv");
-            file.renameTo(newFileName);
+            writer.flush();
         } catch (IOException e) {
+            System.out.println("ERROR");
+            e.printStackTrace();
+        }
+        try {
+            File file = new File("members.csv");
+            file.delete();
+            File newFile = new File("members.tmp");
+            File newFileName = new File("members.csv");
+            newFile.renameTo(newFileName);
+        } catch (Exception e) {
             System.out.println("ERROR");
             e.printStackTrace();
         }

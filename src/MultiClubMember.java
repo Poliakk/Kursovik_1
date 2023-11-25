@@ -16,10 +16,7 @@ public class MultiClubMember extends Member {
 
     @Override
     public String toString() {
-        return getMemberType() +
-                ", " + getMemberID() +
-                ", " + getName() +
-                ", " + getFees() +
+        return super.toString() +
                 ", " + getMembershipPoints() + '\n';
     }
 }

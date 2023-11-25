@@ -5,10 +5,18 @@ public class MembershipManagement {
     final private Scanner reader = new Scanner(System.in);
 
     private int getIntInput() {
+        int choice;
         try {
-            return Integer.parseInt(reader.next());
-        } catch (NumberFormatException e) {
-            System.out.print("Unacceptable input. ");
+            choice = reader.nextInt();
+            reader.nextLine();
+            if (choice == -1) {
+                System.out.println("\nApp is closed.");
+                System.exit(0);
+            }
+            return choice;
+        } catch (Exception e) {
+            System.out.print("Invalid input. ");
+            reader.nextLine();
             return -1;
         }
     }
@@ -18,7 +26,7 @@ public class MembershipManagement {
         System.out.print("1) Club Mercury\n");
         System.out.print("2) Club Neptune\n");
         System.out.print("3) Club Jupiter\n");
-        System.out.print("4) Multi Clubs\n");
+        System.out.print("4) Multi Clubs\n\n");
     }
 
     public int getChoice() {
@@ -46,9 +54,9 @@ public class MembershipManagement {
 
         printClubOptions();
         do {
-            System.out.println(" Input clubID from 1 to 4, please: ");
+            System.out.println("Enter clubID from 1 to 4, please: ");
             club = getIntInput();
-        } while (club < 0 | club > 5);
+        } while (club <= 0 | club >= 5);
 
         if (m.isEmpty()) {
             memberID = 1;
@@ -56,8 +64,8 @@ public class MembershipManagement {
             memberID = m.getLast().getMemberID() + 1;
         }
 
-        System.out.println("Input name of new member: ");
-        name = reader.next();
+        System.out.println("Enter name of new member: ");
+        name = reader.nextLine();
         fees = cal.calculateFees(club);
 
         if (club == 4) {
@@ -67,35 +75,49 @@ public class MembershipManagement {
         }
         mem = mbr.toString();
         m.add(mbr);
-        System.out.printf("<<Welcome new clubmember %s. Your memberID='%d'.>>", mbr.getName(), mbr.getMemberID());
+        System.out.printf("<< Welcome new %sClubmember %s. Your memberID='%d'. >>",
+                (((mbr.getMemberType()) == 'S') ? ("Single") : ("Multi")), mbr.getName(), mbr.getMemberID());
         System.out.println();
         return mem;
     }
 
-    public void removeMember(LinkedList<Member> m) throws IndexOutOfBoundsException {
-        System.out.println("Input memberID to cancel membership: ");
-        int memberID = getIntInput();
+    public void removeMember(LinkedList<Member> m) {
         int i;
-        for (i = 0; i < m.size(); i++) {
-            if (m.get(i).getMemberID() == memberID) {
-                break;
+        do {
+            System.out.println("Please enter memberID to cancel membership: ");
+            int memberID = getIntInput();
+            for (i = 0; i < m.size(); i++) {
+                if (m.get(i).getMemberID() == memberID) {
+                    m.remove(i);
+                    System.out.printf("<< Membership for memberID='%d' is canceled. >>", memberID);
+                    return;
+                }
             }
-        }
-        m.remove(i);
-        System.out.printf("<<Membership for memberID='%d' is canceled.>>", memberID);
-        System.out.println();
+            System.out.println("No member with this ID.");
+            System.out.println();
+        } while (i == m.size());
     }
 
-    public void printMemberInfo(LinkedList<Member> m) throws IndexOutOfBoundsException {
-        System.out.println("Input memberID for info: ");
-        int memberID = getIntInput();
+    public void printMemberInfo(LinkedList<Member> m) {
         int i;
-        for (i = 0; i < m.size(); i++) {
-            if (m.get(i).getMemberID() == memberID) {
-                break;
+        do {
+            System.out.println("Enter memberID for info: ");
+            int memberID = getIntInput();
+            for (i = 0; i < m.size(); i++) {
+                if (m.get(i).getMemberID() == memberID) {
+                    String[] memberInfo = m.get(i).toString().split(", ");
+                    System.out.println("<< Member info: >>");
+                    System.out.printf("memberType: %sClubMember\n", (memberInfo[0].equals("S")) ? ("Single") : ("Multi"));
+                    System.out.printf("memberID: %s\n", memberInfo[1]);
+                    System.out.printf("name: %s\n", memberInfo[2]);
+                    System.out.printf("fees: %s\n", memberInfo[3]);
+                    System.out.print((memberInfo[0].equals("S")) ? ("clubNumber: ") : ("membershipPoints: "));
+                    System.out.print(memberInfo[4]);
+                    System.out.println("--------------------------");
+                    return;
+                }
             }
-        }
-        System.out.println("<< Member info: >>\nmemberType, memberID, name, fees, clubNumber/membershipPoints\n" +
-                m.get(i) + "--------------------");
+            System.out.println("No member with this ID.\n");
+        } while (i == m.size());
     }
 }
