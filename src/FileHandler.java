@@ -15,24 +15,23 @@ public class FileHandler {
             lines = Files.readAllLines(Path.of("members.csv"));
             lines.forEach(System.out::println);
             System.out.println();
+
+            for (String j : lines) {
+                String[] parts = j.split(", ");
+                char pMemberType = parts[0].charAt(0);
+                int pMemberID = Integer.parseInt((parts[1]));
+                String pName = parts[2];
+                double pFees = Double.parseDouble((parts[3]));
+                int lastPart = Integer.parseInt((parts[4]));
+                if (pMemberType == 4) {
+                    mbr = new MultiClubMember(pMemberType, pMemberID, pName, pFees, lastPart);
+                } else {
+                    mbr = new SingleClubMember(pMemberType, pMemberID, pName, pFees, lastPart);
+                }
+                listOfMembers.add(mbr);
+            }
         } catch (IOException e) {
             System.out.println("Can't read file.");
-            return null;
-        }
-
-        for (String j : lines) {
-            String[] parts = j.split(", ");
-            char pMemberType = parts[0].charAt(0);
-            int pMemberID = Integer.parseInt((parts[1]));
-            String pName = parts[2];
-            double pFees = Double.parseDouble((parts[3]));
-            int lastPart = Integer.parseInt((parts[4]));
-            if (pMemberType == 4) {
-                mbr = new MultiClubMember(pMemberType, pMemberID, pName, pFees, lastPart);
-            } else {
-                mbr = new SingleClubMember(pMemberType, pMemberID, pName, pFees, lastPart);
-            }
-            listOfMembers.add(mbr);
         }
         return listOfMembers;
     }
